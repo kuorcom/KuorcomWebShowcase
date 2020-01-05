@@ -17,13 +17,7 @@ public class ListItem : MonoBehaviour
         itemBtn = GetComponent<Button>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void FillItemInfo(InventoryItem inventoryItem)
+    public void FillItemInfo(InventoryItem inventoryItem, int itemIndex)
     {
         titleTxt.text = inventoryItem.itemTitle;
         descTxt.text = inventoryItem.itemDesc;
@@ -31,6 +25,11 @@ public class ListItem : MonoBehaviour
 
         itemImg.sprite = Sprite.Create(inventoryItem.itemImages[0], new Rect(0.0f, 0.0f, inventoryItem.itemImages[0].width, inventoryItem.itemImages[0].height), new Vector2(0.5f, 0.5f), 100.0f);
 
-        itemBtn.onClick.AddListener(() => SceneManager.instance.PlaceItem(inventoryItem.itemModelPrefab));
+        itemBtn.onClick.AddListener(() => SceneManager.instance.PlaceItem(inventoryItem.itemModelPrefab, inventoryItem.colorOptions.Count > 1, inventoryItem.materialOptions.Count > 1));
+        if (inventoryItem.colorOptions.Count > 1)
+            itemBtn.onClick.AddListener(() => InventoryManager.instance.FillColorOptionsList(itemIndex));
+        //
+        if (inventoryItem.materialOptions.Count > 1)
+            itemBtn.onClick.AddListener(() => InventoryManager.instance.FillMaterialOptionsList(itemIndex));
     }
 }

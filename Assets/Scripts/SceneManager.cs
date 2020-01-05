@@ -27,14 +27,26 @@ public class SceneManager : MonoBehaviour
         ClearPlacer();
     }
 
-    public void PlaceItem(GameObject itemModel)
+    public void PlaceItem(GameObject itemModel, bool hasColors, bool hasMaterials)
     {
         ClearPlacer();
         //
-        Instantiate(itemModel, placerTransform);
+        GameObject g = Instantiate(itemModel, placerTransform);
         //
         if (popupGO.activeInHierarchy)
             popupGO.SetActive(false);
+        //
+        if(g.TryGetComponent(out InventoryManager.instance.selectedItem))
+        {
+            InventoryManager.instance.SetOptionsButtonVisible(true);
+        }
+        else
+        {
+            InventoryManager.instance.SetOptionsButtonVisible(false);
+        }
+
+        InventoryManager.instance.SetColorOptionsVisible(hasColors);
+        InventoryManager.instance.SetMaterialOptionsVisible(hasMaterials);
     }
 
     void ClearPlacer()
